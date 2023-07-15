@@ -1,0 +1,37 @@
+version: "3"
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  email_classifier:
+    build: email_classifier
+    depends_on:
+      - kafka
+
+  order_cancellation_processor:
+    build: order_cancellation_processor
+    depends_on:
+      - kafka
+
+  review_processor:
+    build: review_processor
+    depends_on:
+      - kafka
+
+  inquiry_processor:
+    build: inquiry_processor
+    depends_on:
+      - kafka
