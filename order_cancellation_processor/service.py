@@ -5,7 +5,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 c = Consumer({
-    'bootstrap.servers': 'kafka:9092',
+    'bootstrap.servers': 'kafka:29092',
     'group.id': 'order-cancellation-processor',
     'auto.offset.reset': 'earliest'
 })
@@ -21,4 +21,4 @@ while True:
         logger.error(f"Consumer error: {msg.error()}")
         continue
 
-    logger.info(f"Received order cancellation email: {msg.value().decode('utf-8')}")
+    logger.info(f"Received order cancellation email")
